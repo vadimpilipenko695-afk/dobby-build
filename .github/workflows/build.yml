@@ -7,10 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout fixed Dobby fork
+      - name: Checkout Dobby
         uses: actions/checkout@v4
         with:
-          repository: chiteroman/Dobby
+          repository: jmpews/Dobby
           path: Dobby
 
       - name: Set up NDK r25c
@@ -30,7 +30,9 @@ jobs:
             -DDOBBY_GENERATE_SHARED=OFF \
             -DDOBBY_BUILD_EXAMPLE=OFF \
             -DDOBBY_BUILD_TEST=OFF \
-            -DDOBBY_DEBUG=OFF
+            -DDOBBY_DEBUG=OFF \
+            -DCMAKE_C_FLAGS="-Wno-error" \
+            -DCMAKE_CXX_FLAGS="-Wno-error"
 
       - name: Build
         run: cmake --build build -j$(nproc) --target dobby_static
