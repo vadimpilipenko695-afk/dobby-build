@@ -14,19 +14,19 @@ jobs:
           submodules: recursive
 
       - name: Setup Android NDK r25c
-        uses: nttld/setup-ndk@v3
+        uses: nttld/setup-ndk@v1
         with:
           ndk-version: r25c
           add-to-path: true
 
       - name: Patch Assembly Extensions for Clang
         run: |
-          # Переименовываем все .asm файлы в .S, чтобы Clang понимал препроцессор
+          # Переименовываем все .asm файлы в .S, чтобы Clang корректно обрабатывал препроцессор
           find . -name "*.asm" | while read file; do
             mv "$file" "${file%.asm}.S"
           done
           
-          # Заменяем .asm на .S внутри CMakeLists.txt скриптов
+          # Заменяем расширения .asm на .S внутри CMakeLists.txt
           find . -name "CMakeLists.txt" -exec sed -i 's/\.asm/\.S/g' {} +
 
       - name: Configure CMake
