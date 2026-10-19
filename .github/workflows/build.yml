@@ -10,7 +10,7 @@ jobs:
       - name: Checkout Dobby
         uses: actions/checkout@v4
         with:
-          repository: jmpews/Dobby
+          repository: CptGibbs/Dobby-Android
           path: Dobby
 
       - name: Set up NDK r25c
@@ -30,7 +30,6 @@ jobs:
             -DDOBBY_GENERATE_SHARED=OFF \
             -DDOBBY_BUILD_EXAMPLE=OFF \
             -DDOBBY_BUILD_TEST=OFF \
-            -DDOBBY_DEBUG=OFF \
             -DCMAKE_C_FLAGS="-Wno-error" \
             -DCMAKE_CXX_FLAGS="-Wno-error"
 
