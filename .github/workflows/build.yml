@@ -16,16 +16,13 @@ jobs:
       - name: Patch Dobby sources
         run: |
           cd Dobby
-          # 1. Удаляем проблемный ассемблер
+          # Удаляем проблемный ассемблер
           find . -name "closure_bridge_arm64.asm" -delete
           mkdir -p source/TrampolineBridge/ClosureTrampolineBridge/arm64/
           echo " " > source/TrampolineBridge/ClosureTrampolineBridge/arm64/closure_bridge_arm64.asm
-
-          # 2. Патчим заголовочный файл (добавляем load_address)
-          HEADER="common/os_arch_features.h"
-          if [ -f "$HEADER" ]; then
-            sed -i '/struct RuntimeModule {/a \  void *load_address;' $HEADER
-          fi
+          
+          # Патчим сам ProcessRuntime.cc (комментируем строки с load_address)
+          sed -i 's/.*load_address.*/\/\/ patched load_address/g' source/Backend/UserMode/PlatformUtil/Linux/ProcessRuntime.cc || true
 
       - name: Set up NDK r25c
         uses: nttld/setup-ndk@v1
