@@ -10,8 +10,17 @@ jobs:
       - name: Checkout Dobby
         uses: actions/checkout@v4
         with:
-          repository: CptGibbs/Dobby-Android
+          repository: jmpews/Dobby
           path: Dobby
+
+      - name: Patch and Remove bad ASM
+        run: |
+          cd Dobby
+          # Удаляем файл, который ломает сборку на новых NDK
+          find . -name "closure_bridge_arm64.asm" -delete
+          # Создаем пустую заглушку вместо него
+          mkdir -p source/TrampolineBridge/ClosureTrampolineBridge/arm64/
+          echo " " > source/TrampolineBridge/ClosureTrampolineBridge/arm64/closure_bridge_arm64.asm
 
       - name: Set up NDK r25c
         uses: nttld/setup-ndk@v1
